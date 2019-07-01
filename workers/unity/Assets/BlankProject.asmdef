@@ -2,6 +2,7 @@
     "name": "BlankProject",
     "references": [
         "Improbable.Gdk.Core",
+        "Improbable.Gdk.GameObjectCreation",
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Mobile",
         "Improbable.Gdk.TransformSynchronization",

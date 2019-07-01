@@ -1,5 +1,7 @@
 ﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
 
 namespace BlankProject
@@ -16,6 +18,8 @@ namespace BlankProject
         protected override void HandleWorkerConnectionEstablished()
         {
             PlayerLifecycleHelper.AddClientSystems(Worker.World);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World);
+            TransformSynchronizationHelper.AddClientSystems(Worker.World);
         }
 
         protected override string SelectDeploymentName(DeploymentList deployments)
