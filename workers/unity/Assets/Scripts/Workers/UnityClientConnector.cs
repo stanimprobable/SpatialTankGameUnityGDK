@@ -18,7 +18,6 @@ namespace BlankProject
 
         private async void Start()
         {
-            await Connect(WorkerType, new ForwardingDispatcher()).ConfigureAwait(false);
             var connParams = CreateConnectionParameters(WorkerType);
             connParams.Network.ConnectionType = NetworkConnectionType.Kcp;
 
