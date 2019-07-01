@@ -24,6 +24,8 @@ public class ShellExplosionServer : MonoBehaviour
     void Start()
     {
         Destroy(gameObject, _MaxLifeTime);
+
+
     }
 
     // Update is called once per frame

@@ -5,12 +5,11 @@ using UnityEngine.UI;
 using Improbable;
 using Improbable.Worker;
 using Improbable.Gdk.GameObjectCreation;
-using Improbable.Transform;
 using Improbable.Gdk;
 using BlankProject;
-using Improbable.Common;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Gdk.TransformSynchronization;
 using Tankspatial;
 
 public class SpatialShellSpwan : MonoBehaviour

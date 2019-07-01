@@ -1,9 +1,11 @@
 {
     "SchemaStdLibDir": "../../build/dependencies/schema/standard_library",
-    "SchemaSourceDirs": [],
+    "SchemaSourceDirs": [
+        "C:\\Users\\stanhe\\Desktop\\LocalProject\\TankSpatial\\gdk-for-unity-SpatialTank\\schema\\TankSchema\\Tank"
+    ],
     "CodegenOutputDir": "Assets/Generated/Source",
     "DescriptorOutputDir": "../../build/assembly/schema",
-    "RuntimeIp": "",
     "DevAuthTokenDir": "Resources",
-    "DevAuthTokenLifetimeDays": 30
+    "DevAuthTokenLifetimeDays": 30,
+    "SaveDevAuthTokenToFile": false
 }
