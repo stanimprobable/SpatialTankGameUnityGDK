@@ -29,10 +29,10 @@ namespace BlankProject
 
         private static readonly Metrics WorkerMetrics = new Metrics();
 
-        protected override void OnCreateManager()
+        protected override void OnCreate()
         {
-            base.OnCreateManager();
-            connection = World.GetExistingManager<WorkerSystem>().Connection;
+            base.OnCreate();
+            connection = World.GetExistingSystem<WorkerSystem>().Connection;
 
             targetFps = Application.targetFrameRate == -1
                 ? DefaultTargetFrameRate

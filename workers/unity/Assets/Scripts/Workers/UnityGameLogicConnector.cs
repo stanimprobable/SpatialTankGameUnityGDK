@@ -19,7 +19,7 @@ namespace BlankProject
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            Worker.World.GetOrCreateManager<MetricSendSystem>();
+            Worker.World.GetOrCreateSystem<MetricSendSystem>();
             PlayerLifecycleHelper.AddServerSystems(Worker.World);
             GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World);
             TransformSynchronizationHelper.AddServerSystems(Worker.World);
