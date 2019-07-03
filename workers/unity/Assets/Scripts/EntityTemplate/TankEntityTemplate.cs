@@ -17,12 +17,12 @@ using Quaternion = UnityEngine.Quaternion;
 public class TankEntityTemplate 
 {
 
-    public static EntityTemplate TankShell(Vector3 position, Quaternion rotation,float launchspeed,bool explode)
+    public static EntityTemplate TankShell(Vector3 position, Quaternion rotation ,Vector3f launchspeed)
     {
         // Create a HealthPickup component snapshot which is initially active and grants "heathValue" on pickup.
 
         var entityTemplate = new EntityTemplate();
-        var speed = new Tankspatial.Shell.Snapshot(launchspeed,explode);
+        var speed = new Tankspatial.Shell.Snapshot(launchspeed);
         var serverAttribute = WorkerUtils.UnityGameLogic;
         entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(position.x, position.y,position.z)), serverAttribute);//Add position Component to Template 
         entityTemplate.AddComponent(new Metadata.Snapshot("Shell"), serverAttribute);
@@ -32,9 +32,8 @@ public class TankEntityTemplate
         TransformSynchronizationHelper.AddTransformSynchronizationComponents(
             entityTemplate,
             serverAttribute,
-            rotation:  rotation,
-            location : position,
-            velocity : rotation *Vector3.forward *launchspeed  
+            location: position,
+            rotation: rotation
             );
 
         return entityTemplate;
@@ -47,10 +46,10 @@ public class TankEntityTemplate
         var serverAttribute = WorkerUtils.UnityGameLogic;
         var tankHealth = new Tankspatial.TankHealth.Snapshot(100, 100);
         var playerShootFeature = new Tankspatial.PlayerShoot.Snapshot();
-        var TankPosition = new Tankspatial.TankPosition.Snapshot(0, 0);
+        var TankInput = new Tankspatial.TankInput.Snapshot(0, 0);
         template.AddComponent(new Position.Snapshot(), serverAttribute);
         template.AddComponent(new Metadata.Snapshot("Tank"), serverAttribute);
-        template.AddComponent(TankPosition, clientAttribute);
+        template.AddComponent(TankInput, clientAttribute);
         template.AddComponent(tankHealth, serverAttribute);//Add Health Component to Tank 
         template.AddComponent(playerShootFeature, serverAttribute);
         TransformSynchronizationHelper.AddTransformSynchronizationComponents(

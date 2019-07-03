@@ -15,20 +15,23 @@ using Tankspatial;
 public class SpatialShellSpwan : MonoBehaviour
 {
     [Require] ShellWriter shellWriter;
-    [Require] TransformInternalWriter tranformWriter;
 
     // Start is called before the first frame update
     private void OnEnable()
     {
         setupSpeed();
     }
+    private void Update()
+    {
+        if (transform.position.y == 0)
+        {
+            Debug.Log("position reset");
+        }
+    }
     private void setupSpeed()
     {
-        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(
-            tranformWriter.Data.Velocity.X,
-            tranformWriter.Data.Velocity.Y,
-            tranformWriter.Data.Velocity.Z
-        ) * shellWriter.Data.Speed;
+        gameObject.GetComponent<Rigidbody>().velocity = shellWriter.Data.Speed.ToUnityVector();
+
     }
 
 }

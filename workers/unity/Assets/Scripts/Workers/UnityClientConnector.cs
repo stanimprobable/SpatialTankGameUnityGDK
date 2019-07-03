@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-﻿using Improbable.Gdk.Core;
-using Improbable.Gdk.GameObjectCreation;
-=======
 ﻿using System;
 using Improbable.Gdk.Core;
->>>>>>> 0.2.4
-using Improbable.Gdk.PlayerLifecycle;
+ using Improbable.Gdk.GameObjectCreation;
+ using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
 using UnityEngine;

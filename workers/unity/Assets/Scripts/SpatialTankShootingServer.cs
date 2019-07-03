@@ -33,8 +33,7 @@ using Unity.Entities;
             var payLoad = receivedRequest.Payload;
             var spwanPosition = payLoad.Spwanposition.ToUnityVector();
             var spwanSpeed = payLoad.Launchforce;
-            var explode = false;
-            var shell = new WorldCommands.CreateEntity.Request(TankEntityTemplate.TankShell(spwanPosition,transform.rotation,spwanSpeed,explode));
+            var shell = new WorldCommands.CreateEntity.Request(TankEntityTemplate.TankShell(spwanPosition,,spwanSpeed));
             worldCommandSender.SendCreateEntityCommand(shell,onCreateEntiyResponse);
         }
 

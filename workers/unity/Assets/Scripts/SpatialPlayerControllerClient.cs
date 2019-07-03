@@ -16,7 +16,7 @@ using Quaternion = UnityEngine.Quaternion;
 
 public class SpatialPlayerControllerClient : MonoBehaviour
 {
-    [Require] private TankPositionWriter tankPositionWriter;
+    [Require] private TankInputWriter tankInputWriter;
 
     
 
@@ -57,7 +57,7 @@ public class SpatialPlayerControllerClient : MonoBehaviour
     {
         _movementInputValue = Input.GetAxis("Vertical");
         _turnInputValue = Input.GetAxis("Horizontal");
-        tankPositionWriter?.SendUpdate(new TankPosition.Update
+        tankInputWriter?.SendUpdate(new TankInput.Update
         {
             Turninputvalue = _turnInputValue,
             Movementinputvalue = _movementInputValue

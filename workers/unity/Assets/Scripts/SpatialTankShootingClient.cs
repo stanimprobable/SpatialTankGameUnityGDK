@@ -17,6 +17,7 @@ public class SpatialTankShootingClient : MonoBehaviour
 {
     [Require] private PlayerShootCommandSender playerShootCommandSender;
     [Require] private EntityId selfEntityID;
+    [Require] private TankInputWriter makeThisScirptONSpeificClientOnly;
 
     public Slider _AimSlider;                  // A child of the tank that displays the current launch force.
     public Transform _FireTransform;           // A child of the tank where the shells are spawned.
@@ -74,7 +75,8 @@ public class SpatialTankShootingClient : MonoBehaviour
     {       
         _Fired = true;
         var spwanPosition = Vector3f.FromUnityVector(_FireTransform.position);
-        playerShootCommandSender.SendShootCommand(selfEntityID, new ShootRequest(CurrentLaunchForce,spwanPosition));
-        Debug.Log("FireRequestSent");
+        var vectorspeed = Vector3f.FromUnityVector(_FireTransform.rotation * Vector3.forward * CurrentLaunchForce);
+        playerShootCommandSender.SendShootCommand(selfEntityID, new ShootRequest(vectorspeed, spwanPosition));
+        Debug.Log("FireRequestSent");     
     }
 }

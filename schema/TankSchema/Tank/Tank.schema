@@ -4,15 +4,16 @@ import "improbable/vector3.schema";
 type TakeDamnageRquest{
     uint32 amount=1;
 }
-
 type TakeDamangeReponse{}
 
 type ShootRequest{
-  float launchforce=1;
+  improbable.Vector3f launchforce=1;
   improbable.Vector3f spwanposition=2;
 }
-
 type ShootResponse{}
+
+type ShellExplodeRequest{}
+
 
 component TankHealth{
   id = 1001;
@@ -21,7 +22,7 @@ component TankHealth{
   command TakeDamangeReponse damage(TakeDamnageRquest);
 }
 
-component TankPosition{
+component TankInput{
   id = 1002;
   float movementinputvalue=1; 
   float turninputvalue=2;
@@ -33,7 +34,7 @@ component PlayerShoot{
 }
 component Shell{
   id = 1004;
-  float speed=1;
-  bool explode=2;
+  improbable.Vector3f speed=1;
+  event ShellExplodeRequest explode;
 }
 

@@ -14,12 +14,7 @@ namespace BlankProject
 
         private async void Start()
         {
-<<<<<<< HEAD
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = TankEntityTemplate.CreatePlayerEntityTemplate;
-            await Connect(WorkerType, new ForwardingDispatcher()).ConfigureAwait(false);
-            
-=======
-            PlayerLifecycleConfig.CreatePlayerEntityTemplate = CreatePlayerEntityTemplate;
 
             IConnectionFlow flow;
             ConnectionParameters connectionParameters;
@@ -42,7 +37,6 @@ namespace BlankProject
                 .SetConnectionParameters(connectionParameters);
 
             await Connect(builder, new ForwardingDispatcher()).ConfigureAwait(false);
->>>>>>> 0.2.4
         }
 
         protected override void HandleWorkerConnectionEstablished()

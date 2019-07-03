@@ -17,8 +17,9 @@ using Quaternion = UnityEngine.Quaternion;
     public class SpatialPlayerControllerServer : MonoBehaviour 
     {
         [Require] private PositionWriter posWriter;
-        [Require] private TankPositionReader tankPositionReader;
+        [Require] private TankInputReader tankPositionReader;
 
+    // Start is called before the first frame update
     // Start is called before the first frame update
     //   public float speed;
     //   public Text CountText;

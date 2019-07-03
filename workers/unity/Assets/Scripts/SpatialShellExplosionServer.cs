@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Worker.CInterop;
+using Tankspatial;
+using Unity.Entities;
 using UnityEngine;
 
-public class ShellExplosionServer : MonoBehaviour
+public class SpatialShellExplosionServer : MonoBehaviour
 {
     [Require] private WorldCommandSender worldCommandSender;
+    [Require] private EntityId selfEntityID;
+    [Require] private PositionWriter posWriter;
+    [Require] private ShellWriter shellWriter;
     public LayerMask _TankMask;                        // Used to filter what the explosion affects, this should be set to "Players".
-    public ParticleSystem _ExplosionParticles;         // Reference to the particles that will play on explosion.
     private float _MaxDamage;                    // The amount of damage done if the explosion is centred on a tank.
     private float _ExplosionForce;              // The amount of force added to a tank at the centre of the explosion.
     private float _MaxLifeTime;                    // The time in seconds before the shell is removed.
@@ -18,19 +25,22 @@ public class ShellExplosionServer : MonoBehaviour
     {
         _MaxDamage = 100f;
         _ExplosionForce = 1000f;
-        _MaxLifeTime = 2f;
+        _MaxLifeTime = 10f;
         _ExplosionRadius = 5f;
     }
-    void Start()
+    private void Update()
     {
-        Destroy(gameObject, _MaxLifeTime);
-
-
+        timeout();
     }
 
     // Update is called once per frame
     private void OnTriggerEnter(Collider other)
     {
+        if (!this.enabled)
+        {
+            return;
+        }
+
         Collider[] colliders = Physics.OverlapSphere(transform.position, _ExplosionRadius, _TankMask);
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -54,11 +64,19 @@ public class ShellExplosionServer : MonoBehaviour
 
             targetHealth.TakeDamage(damage);
         }
-        _ExplosionParticles.transform.parent = null;
-        var explosion = Instantiate(_ExplosionParticles);
+ //       _ExplosionParticles.transform.parent = null;
+ /*       var explosion = Instantiate(_ExplosionParticles);
         explosion.Play();
-        Destroy(explosion.gameObject, explosion.main.duration);
-        Destroy(gameObject);
+        Destroy(explosion.gameObject, explosion.main.duration); client side shit*/
+       
+       // shellComandSender.SendExplodeCommand.
+
+        shellWriter.SendExplodeEvent(new ShellExplodeRequest());
+        GetComponent<Collider>().enabled = false;
+        GetComponent<Renderer>().enabled = false;
+        GetComponent<Light>().enabled = false;       
+        timeout();
+
     }
 
     private float CalculateDamage(Vector3 targetPosition)
@@ -71,6 +89,33 @@ public class ShellExplosionServer : MonoBehaviour
 
         damage = Mathf.Max(0f, damage);
         return damage;
+    }
+
+    private void timeout()
+    {
+        _MaxLifeTime -= Time.deltaTime;
+        if (_MaxLifeTime < 0)
+        {
+            DeleteEntity();
+        }
+    }
+
+    private void DeleteEntity()
+    {
+        var request = new WorldCommands.DeleteEntity.Request(selfEntityID);
+        worldCommandSender.SendDeleteEntityCommand(request, OnDeleteEntityReponse);
+    }
+
+    private void OnDeleteEntityReponse(WorldCommands.DeleteEntity.ReceivedResponse response)
+    {
+        if (response.StatusCode == StatusCode.Success)
+        {
+            Debug.Log("Shell has been deleted ID is +" + response.EntityId.Id);
+        }
+        else
+        {
+            Debug.Log("Shell " + response.EntityId.Id + "delete fail check you shit");
+        }
     }
 
 }
