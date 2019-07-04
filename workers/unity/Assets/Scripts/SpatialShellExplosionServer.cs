@@ -74,7 +74,8 @@ public class SpatialShellExplosionServer : MonoBehaviour
         shellWriter.SendExplodeEvent(new ShellExplodeRequest());
         GetComponent<Collider>().enabled = false;
         GetComponent<Renderer>().enabled = false;
-        GetComponent<Light>().enabled = false;       
+        GetComponent<Light>().enabled = false;
+        GetComponent<Rigidbody>().isKinematic = true;
         timeout();
 
     }

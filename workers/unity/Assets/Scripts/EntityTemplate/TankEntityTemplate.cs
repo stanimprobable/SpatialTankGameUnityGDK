@@ -33,7 +33,7 @@ public class TankEntityTemplate
             entityTemplate,
             serverAttribute,
             location: position,
-            rotation: rotation
+            rotation: rotation       
             );
 
         return entityTemplate;

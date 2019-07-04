@@ -21,9 +21,8 @@ public class SpatialShellExplosionClient : MonoBehaviour
     private void playExplodeAnimation(ShellExplodeRequest obj)
     {
         _ExplosionParticles.transform.parent = null;
-        var explosion = Instantiate(_ExplosionParticles);
-        explosion.Play();
-        Destroy(explosion.gameObject, explosion.main.duration);
+        _ExplosionParticles.Play();
+        Destroy(_ExplosionParticles.gameObject, _ExplosionParticles.main.duration);
         GetComponent<Collider>().enabled = false;
         GetComponent<Renderer>().enabled = false;
         GetComponent<Light>().enabled = false;

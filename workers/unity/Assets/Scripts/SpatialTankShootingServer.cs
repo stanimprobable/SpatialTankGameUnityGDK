@@ -21,6 +21,7 @@ using Unity.Entities;
         [Require] private PlayerShootCommandReceiver playerShootCommandReceiver;
         [Require] private WorldCommandSender worldCommandSender;
 
+        public Transform _FireTransform;  
         // Start is called before the first frame update
         private void OnEnable()
         {
@@ -33,7 +34,7 @@ using Unity.Entities;
             var payLoad = receivedRequest.Payload;
             var spwanPosition = payLoad.Spwanposition.ToUnityVector();
             var spwanSpeed = payLoad.Launchforce;
-            var shell = new WorldCommands.CreateEntity.Request(TankEntityTemplate.TankShell(spwanPosition,,spwanSpeed));
+            var shell = new WorldCommands.CreateEntity.Request(TankEntityTemplate.TankShell(spwanPosition, _FireTransform.rotation,spwanSpeed));
             worldCommandSender.SendCreateEntityCommand(shell,onCreateEntiyResponse);
         }
 
