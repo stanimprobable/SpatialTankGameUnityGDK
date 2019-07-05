@@ -10,7 +10,6 @@ using BlankProject;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Tankspatial;
-using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 
 

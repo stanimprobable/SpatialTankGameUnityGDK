@@ -15,6 +15,8 @@ public class SpatialShellExplosionServer : MonoBehaviour
     [Require] private EntityId selfEntityID;
     [Require] private PositionWriter posWriter;
     [Require] private ShellWriter shellWriter;
+    [Require] private TankHealthCommandSender tankHealthCommandSender;
+
     public LayerMask _TankMask;                        // Used to filter what the explosion affects, this should be set to "Players".
     private float _MaxDamage;                    // The amount of damage done if the explosion is centred on a tank.
     private float _ExplosionForce;              // The amount of force added to a tank at the centre of the explosion.
@@ -31,6 +33,17 @@ public class SpatialShellExplosionServer : MonoBehaviour
     private void Update()
     {
         timeout();
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log(selfEntityID);
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("shit happens" + selfEntityID);
+     
     }
 
     // Update is called once per frame
@@ -56,20 +69,21 @@ public class SpatialShellExplosionServer : MonoBehaviour
 
             Debug.DrawLine(targetRidigbody.position, targetRidigbody.position + forceDir * 10, Color.green, 2);
 
-            TankHealth targetHealth = targetRidigbody.GetComponent<TankHealth>();
-
-            if (!targetHealth)
-                continue;
             float damage = CalculateDamage(targetRidigbody.transform.position);
 
-            targetHealth.TakeDamage(damage);
+            var hitTargetEntityID = other.gameObject.GetComponent<LinkedEntityComponent>().EntityId;
+
+            if (hitTargetEntityID == null)
+            {
+                Debug.LogWarning("Hit Object doest not exisited on Spatial");
+                return;
+            }
+
+            tankHealthCommandSender.SendDamageCommand(hitTargetEntityID, new TakeDamnageRquest
+            {
+                Amount = (uint)damage 
+            },OnTargetHitReponse);
         }
- //       _ExplosionParticles.transform.parent = null;
- /*       var explosion = Instantiate(_ExplosionParticles);
-        explosion.Play();
-        Destroy(explosion.gameObject, explosion.main.duration); client side shit*/
-       
-       // shellComandSender.SendExplodeCommand.
 
         shellWriter.SendExplodeEvent(new ShellExplodeRequest());
         GetComponent<Collider>().enabled = false;
@@ -77,6 +91,15 @@ public class SpatialShellExplosionServer : MonoBehaviour
         GetComponent<Light>().enabled = false;
         GetComponent<Rigidbody>().isKinematic = true;
         timeout();
+
+    }
+
+    private void OnTargetHitReponse(Tankspatial.TankHealth.Damage.ReceivedResponse reponse)
+    {
+        if (reponse.StatusCode == StatusCode.Success)
+        {
+            Debug.Log(reponse.EntityId + "get hit,health reduced" + reponse.RequestPayload.Amount);
+        }
 
     }
 
@@ -105,6 +128,7 @@ public class SpatialShellExplosionServer : MonoBehaviour
     {
         var request = new WorldCommands.DeleteEntity.Request(selfEntityID);
         worldCommandSender.SendDeleteEntityCommand(request, OnDeleteEntityReponse);
+        
     }
 
     private void OnDeleteEntityReponse(WorldCommands.DeleteEntity.ReceivedResponse response)
